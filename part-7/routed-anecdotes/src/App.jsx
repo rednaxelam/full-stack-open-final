@@ -54,10 +54,11 @@ const App = () => {
       <h1>Software anecdotes</h1>
 
       <Menu />
+      {notification ? <p style={{'border': '2px solid red'}}>{notification}</p> : null}
 
       <Routes>
         <Route path='/' element={<AnecdoteList anecdotes={anecdotes} />} />
-        <Route path='/create_new' element={<CreateNew addNew={addNew} />} />
+        <Route path='/create_new' element={<CreateNew addNew={addNew} setNotification={setNotification}/>} />
         <Route path='/about' element={<About />} />
         <Route path='/anecdotes/:id' element={<Anecdote anecdote={anecdote} />} />
       </Routes>
