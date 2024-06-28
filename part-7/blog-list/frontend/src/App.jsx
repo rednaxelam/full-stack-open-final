@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react'
-import OutcomeMessage from './components/OutcomeMessage'
-import BlogList from './components/BlogList'
-import BlogForm from './components/BlogForm'
-import LogInForm from './components/LogInForm'
-import Toggleable from './components/Toggleable'
-import blogService from './services/blogs'
+import { useState, useEffect } from "react"
+import OutcomeMessage from "./components/OutcomeMessage"
+import BlogList from "./components/BlogList"
+import BlogForm from "./components/BlogForm"
+import LogInForm from "./components/LogInForm"
+import Toggleable from "./components/Toggleable"
+import blogService from "./services/blogs"
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -12,7 +12,7 @@ const App = () => {
   const [outcomeMessage, setOutcomeMessage] = useState(null)
 
   useEffect(() => {
-    const savedUser = window.localStorage.getItem('loggedUser')
+    const savedUser = window.localStorage.getItem("loggedUser")
     if (savedUser) {
       const currentUser = JSON.parse(savedUser)
       setUser(currentUser)
@@ -22,7 +22,7 @@ const App = () => {
 
   useEffect(() => {
     if (user) {
-      blogService.getAll().then(blogs => {
+      blogService.getAll().then((blogs) => {
         setBlogs(blogs)
       })
       blogService.setToken(user.token)
@@ -40,8 +40,8 @@ const App = () => {
 
   const logOut = () => {
     setUser(null)
-    window.localStorage.removeItem('loggedUser')
-    setOutcomeMessage(['success', 'logged out successfully'])
+    window.localStorage.removeItem("loggedUser")
+    setOutcomeMessage(["success", "logged out successfully"])
   }
 
   const displayOutcomeMessage = () => {
@@ -54,19 +54,34 @@ const App = () => {
 
   const displayMain = () => {
     if (user === null) {
-      return <>
-        <h2>log in to the application</h2>
-        <LogInForm setUser={setUser} setOutcomeMessage={setOutcomeMessage} />
-      </>
+      return (
+        <>
+          <h2>log in to the application</h2>
+          <LogInForm setUser={setUser} setOutcomeMessage={setOutcomeMessage} />
+        </>
+      )
     } else {
-      return <>
-        <h2>blogs</h2>
-        <p>{user.name} logged in <button onClick={() => logOut()}>Log Out</button></p>
-        <Toggleable label={'add new blog'}>
-          <BlogForm setBlogs={setBlogs} setOutcomeMessage={setOutcomeMessage} />
-        </Toggleable>
-        <BlogList blogs={blogs} setBlogs={setBlogs} setOutcomeMessage={setOutcomeMessage} user={user} />
-      </>
+      return (
+        <>
+          <h2>blogs</h2>
+          <p>
+            {user.name} logged in{" "}
+            <button onClick={() => logOut()}>Log Out</button>
+          </p>
+          <Toggleable label={"add new blog"}>
+            <BlogForm
+              setBlogs={setBlogs}
+              setOutcomeMessage={setOutcomeMessage}
+            />
+          </Toggleable>
+          <BlogList
+            blogs={blogs}
+            setBlogs={setBlogs}
+            setOutcomeMessage={setOutcomeMessage}
+            user={user}
+          />
+        </>
+      )
     }
   }
 
