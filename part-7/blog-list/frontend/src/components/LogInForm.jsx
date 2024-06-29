@@ -1,7 +1,11 @@
 import { useState } from "react"
 import loginService from "../services/login"
+import { useDispatch } from "react-redux"
+import { createNotification } from "../reducers/notificationReducer"
 
-const LogInForm = ({ setUser, setOutcomeMessage }) => {
+const LogInForm = ({ setUser }) => {
+  const dispatch = useDispatch()
+
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
 
@@ -11,10 +15,10 @@ const LogInForm = ({ setUser, setOutcomeMessage }) => {
     try {
       const user = await loginService.logIn({ username, password })
       setUser(user)
-      setOutcomeMessage(["success", "Successfully logged in"])
+      dispatch(createNotification(["success", "Successfully logged in"], 5))
       window.localStorage.setItem("loggedUser", JSON.stringify(user))
     } catch (error) {
-      setOutcomeMessage(["failure", "Login Unsuccessful"])
+      dispatch(createNotification(["failure", "Login Unsuccessful"], 5))
     }
 
     setUsername("")

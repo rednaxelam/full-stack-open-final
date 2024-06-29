@@ -18,6 +18,7 @@ loginRouter.post('/', async (request, response) => {
 
   if (!passwordCorrect) {
     response.status(401).json({ error: 'password incorrect' })
+    return
   }
 
   const userForToken = {

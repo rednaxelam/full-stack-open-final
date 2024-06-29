@@ -1,7 +1,10 @@
 import { useState } from "react"
 import blogService from "../services/blogs"
+import { useDispatch } from "react-redux"
+import { createNotification } from "../reducers/notificationReducer"
 
-const Blog = ({ blog, setBlogs, setOutcomeMessage, user }) => {
+const Blog = ({ blog, setBlogs, user }) => {
+  const dispatch = useDispatch()
   const [showDetailed, setShowDetailed] = useState(false)
 
   const blogStyle = {
@@ -31,8 +34,11 @@ const Blog = ({ blog, setBlogs, setOutcomeMessage, user }) => {
       await blogService.updateBlog(newBlog, blog.id)
       const newBlogList = await blogService.getAll()
       setBlogs(newBlogList)
+      dispatch(
+        createNotification(["success", `${newBlog.title} has been liked`]),
+      )
     } catch (error) {
-      setOutcomeMessage(["failure", error.message])
+      dispatch(createNotification(["failure", error.message]))
     }
   }
 
@@ -52,10 +58,10 @@ const Blog = ({ blog, setBlogs, setOutcomeMessage, user }) => {
         await blogService.deleteBlog(blog.id)
         const newBlogList = await blogService.getAll()
         setBlogs(newBlogList)
-        setOutcomeMessage(["success", successMessage])
+        dispatch(createNotification(["success", successMessage]))
       }
     } catch (error) {
-      setOutcomeMessage(["failure", error.message])
+      dispatch(createNotification(["failure", error.message]))
     }
   }
 

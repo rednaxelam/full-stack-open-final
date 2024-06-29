@@ -1,7 +1,12 @@
-const OutcomeMessage = ({ outcomeMessage }) => {
+import { useSelector } from "react-redux"
+
+const OutcomeMessage = () => {
+  const notificationObject = useSelector((state) => state.notification)
+  if (!notificationObject.content) return null
+
   let style = undefined
 
-  if (outcomeMessage[0] === "success") {
+  if (notificationObject.outcome === "success") {
     style = {
       color: "DarkGreen",
       backgroundColor: "LightGray",
@@ -10,7 +15,7 @@ const OutcomeMessage = ({ outcomeMessage }) => {
       fontSize: "16px",
       padding: "10px",
     }
-  } else if (outcomeMessage[0] === "failure") {
+  } else if (notificationObject.outcome === "failure") {
     style = {
       color: "Red",
       backgroundColor: "LightGray",
@@ -30,7 +35,7 @@ const OutcomeMessage = ({ outcomeMessage }) => {
     }
   }
 
-  return <p style={style}>{outcomeMessage[1]}</p>
+  return <p style={style}>{notificationObject.content}</p>
 }
 
 export default OutcomeMessage

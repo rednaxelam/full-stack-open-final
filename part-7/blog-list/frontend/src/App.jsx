@@ -6,10 +6,14 @@ import LogInForm from "./components/LogInForm"
 import Toggleable from "./components/Toggleable"
 import blogService from "./services/blogs"
 
+import { createNotification } from "./reducers/notificationReducer"
+import { useDispatch } from "react-redux"
+
 const App = () => {
+  const dispatch = useDispatch()
+
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [outcomeMessage, setOutcomeMessage] = useState(null)
 
   useEffect(() => {
     const savedUser = window.localStorage.getItem("loggedUser")
@@ -32,24 +36,10 @@ const App = () => {
     }
   }, [user])
 
-  useEffect(() => {
-    if (outcomeMessage) {
-      setTimeout(() => setOutcomeMessage(null), 4000)
-    }
-  }, [outcomeMessage])
-
   const logOut = () => {
     setUser(null)
     window.localStorage.removeItem("loggedUser")
-    setOutcomeMessage(["success", "logged out successfully"])
-  }
-
-  const displayOutcomeMessage = () => {
-    if (outcomeMessage === null) {
-      return <></>
-    } else {
-      return <OutcomeMessage outcomeMessage={outcomeMessage} />
-    }
+    dispatch(createNotification(["success", "logged out successfully"], 5))
   }
 
   const displayMain = () => {
@@ -57,7 +47,7 @@ const App = () => {
       return (
         <>
           <h2>log in to the application</h2>
-          <LogInForm setUser={setUser} setOutcomeMessage={setOutcomeMessage} />
+          <LogInForm setUser={setUser} />
         </>
       )
     } else {
@@ -69,17 +59,9 @@ const App = () => {
             <button onClick={() => logOut()}>Log Out</button>
           </p>
           <Toggleable label={"add new blog"}>
-            <BlogForm
-              setBlogs={setBlogs}
-              setOutcomeMessage={setOutcomeMessage}
-            />
+            <BlogForm setBlogs={setBlogs} />
           </Toggleable>
-          <BlogList
-            blogs={blogs}
-            setBlogs={setBlogs}
-            setOutcomeMessage={setOutcomeMessage}
-            user={user}
-          />
+          <BlogList blogs={blogs} setBlogs={setBlogs} user={user} />
         </>
       )
     }
@@ -87,7 +69,7 @@ const App = () => {
 
   return (
     <div>
-      {displayOutcomeMessage()}
+      <OutcomeMessage />
       {displayMain()}
     </div>
   )

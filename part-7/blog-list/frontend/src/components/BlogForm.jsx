@@ -1,5 +1,7 @@
 import { useState } from "react"
 import blogServices from "../services/blogs"
+import { useDispatch } from "react-redux"
+import { createNotification } from "../reducers/notificationReducer"
 
 const handleInputChange = (stateUpdater) => {
   return ({ target }) => stateUpdater(target.value)
@@ -20,7 +22,9 @@ const TextualInput = ({ nom, state, stateUpdater }) => {
   )
 }
 
-const BlogForm = ({ setBlogs, setOutcomeMessage, setVisibility }) => {
+const BlogForm = ({ setBlogs, setVisibility }) => {
+  const dispatch = useDispatch()
+
   const [title, setTitle] = useState("")
   const [author, setAuthor] = useState("")
   const [url, setUrl] = useState("")
@@ -42,16 +46,21 @@ const BlogForm = ({ setBlogs, setOutcomeMessage, setVisibility }) => {
       await blogServices.postBlog(blogObject)
       const newBlogList = await blogServices.getAll()
       setBlogs(newBlogList)
-      setOutcomeMessage([
-        "success",
-        `added ${blogObject.title} by ${blogObject.author} to blog list`,
-      ])
+      dispatch(
+        createNotification(
+          [
+            "success",
+            `added ${blogObject.title} by ${blogObject.author} to blog list`,
+          ],
+          5,
+        ),
+      )
       if (setVisibility) setVisibility(false)
       setTitle("")
       setAuthor("")
       setUrl("")
     } catch (error) {
-      setOutcomeMessage(["failure", error.message])
+      dispatch(createNotification(["failure", error.message], 5))
     }
   }
 
