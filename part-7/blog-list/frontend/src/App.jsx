@@ -1,43 +1,36 @@
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import OutcomeMessage from "./components/OutcomeMessage"
 import BlogList from "./components/BlogList"
 import BlogForm from "./components/BlogForm"
 import LogInForm from "./components/LogInForm"
 import Toggleable from "./components/Toggleable"
-import blogService from "./services/blogs"
 
 import { createNotification } from "./reducers/notificationReducer"
 import { initialiseBlogs, clearBlogs } from "./reducers/blogReducer"
-import { useDispatch } from "react-redux"
+import { initialiseUser, logOut as logOutAction } from "./reducers/userReducer"
+import { useDispatch, useSelector } from "react-redux"
 
 const App = () => {
   const dispatch = useDispatch()
 
-  const [user, setUser] = useState(null)
-
   useEffect(() => {
-    const savedUser = window.localStorage.getItem("loggedUser")
-    if (savedUser) {
-      const currentUser = JSON.parse(savedUser)
-      setUser(currentUser)
-      blogService.setToken(currentUser.token)
-    }
-  }, [])
+    dispatch(initialiseUser())
+  }, [dispatch])
+
+  const user = useSelector(state => state.user)
 
   useEffect(() => {
     if (user) {
       dispatch(initialiseBlogs())
-      blogService.setToken(user.token)
     } else {
       dispatch(clearBlogs())
-      blogService.removeToken()
     }
   }, [dispatch, user])
 
   const logOut = () => {
-    setUser(null)
-    window.localStorage.removeItem("loggedUser")
-    dispatch(createNotification(["success", "logged out successfully"], 5))
+    dispatch(logOutAction()).then(() => {
+      dispatch(createNotification(["success", "logged out successfully"], 5))
+    })
   }
 
   const displayMain = () => {
@@ -45,7 +38,7 @@ const App = () => {
       return (
         <>
           <h2>log in to the application</h2>
-          <LogInForm setUser={setUser} />
+          <LogInForm />
         </>
       )
     } else {
@@ -59,7 +52,7 @@ const App = () => {
           <Toggleable label={"add new blog"}>
             <BlogForm />
           </Toggleable>
-          <BlogList user={user} />
+          <BlogList />
         </>
       )
     }

@@ -1,25 +1,24 @@
 import { useState } from "react"
-import loginService from "../services/login"
 import { useDispatch } from "react-redux"
 import { createNotification } from "../reducers/notificationReducer"
+import { logIn } from "../reducers/userReducer"
 
-const LogInForm = ({ setUser }) => {
+const LogInForm = () => {
   const dispatch = useDispatch()
 
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
 
-    try {
-      const user = await loginService.logIn({ username, password })
-      setUser(user)
-      dispatch(createNotification(["success", "Successfully logged in"], 5))
-      window.localStorage.setItem("loggedUser", JSON.stringify(user))
-    } catch (error) {
-      dispatch(createNotification(["failure", "Login Unsuccessful"], 5))
-    }
+    dispatch(logIn({ username, password }))
+      .then(() => {
+        dispatch(createNotification(["success", "Successfully logged in"]))
+      })
+      .catch(() =>
+        dispatch(createNotification(["failure", "Login Unsuccessful"])),
+      )
 
     setUsername("")
     setPassword("")
