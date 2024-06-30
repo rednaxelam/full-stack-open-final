@@ -1,9 +1,12 @@
 import { useState } from "react"
-import blogService from "../services/blogs"
 import { useDispatch } from "react-redux"
 import { createNotification } from "../reducers/notificationReducer"
+import {
+  likeBlog as likeBlogAction,
+  deleteBlog as deleteBlogAction,
+} from "../reducers/blogReducer"
 
-const Blog = ({ blog, setBlogs, user }) => {
+const Blog = ({ blog, user }) => {
   const dispatch = useDispatch()
   const [showDetailed, setShowDetailed] = useState(false)
 
@@ -15,53 +18,41 @@ const Blog = ({ blog, setBlogs, user }) => {
     marginBottom: "5px",
   }
 
-  const likeBlog = async () => {
-    // the below is a compromise made for exercise 5.15: not wanting to restructure my application so
-    // that likeBlog is passed as a prop to the Blog component (and thus can be nicely mocked), I added the
-    // if statement below to just call the mock function when the like button is clicked
-    if (process.env.NODE_ENV === "test") {
-      setBlogs("mock called")
-      return
-    }
-    try {
-      const newBlog = {
-        title: blog.title,
-        author: blog.author,
-        url: blog.url,
-        likes: blog.likes + 1,
-        user: blog.user.id,
-      }
-      await blogService.updateBlog(newBlog, blog.id)
-      const newBlogList = await blogService.getAll()
-      setBlogs(newBlogList)
-      dispatch(
-        createNotification(["success", `${newBlog.title} has been liked`]),
+  const likeBlog = () => {
+    dispatch(likeBlogAction(blog))
+      .then(() => {
+        dispatch(
+          createNotification(["success", `${blog.title} has been liked`]),
+        )
+      })
+      .catch((error) =>
+        dispatch(createNotification(["failure", error.message])),
       )
-    } catch (error) {
-      dispatch(createNotification(["failure", error.message]))
-    }
   }
 
-  const deleteBlog = async () => {
-    try {
-      if (user.username !== blog.user.username) {
-        throw new Error(
+  const deleteBlog = () => {
+    if (user.username !== blog.user.username) {
+      dispatch(
+        createNotification([
+          "failure",
           "Unauthorized action: Only the creator of an entry may delete it",
+        ]),
+      )
+      return
+    }
+    if (
+      window.confirm(
+        `Permanently delete entry for ${blog.title} by ${blog.author}?`,
+      )
+    ) {
+      const successMessage = `entry for ${blog.title} has been successfully deleted`
+      dispatch(deleteBlogAction(blog))
+        .then(() => {
+          dispatch(createNotification(["success", successMessage]))
+        })
+        .catch((error) =>
+          dispatch(createNotification(["failure", error.message])),
         )
-      }
-      if (
-        window.confirm(
-          `Permanently delete entry for ${blog.title} by ${blog.author}?`,
-        )
-      ) {
-        const successMessage = `entry for ${blog.title} has been successfully deleted`
-        await blogService.deleteBlog(blog.id)
-        const newBlogList = await blogService.getAll()
-        setBlogs(newBlogList)
-        dispatch(createNotification(["success", successMessage]))
-      }
-    } catch (error) {
-      dispatch(createNotification(["failure", error.message]))
     }
   }
 

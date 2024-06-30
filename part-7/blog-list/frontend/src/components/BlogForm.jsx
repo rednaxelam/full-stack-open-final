@@ -1,7 +1,7 @@
 import { useState } from "react"
-import blogServices from "../services/blogs"
 import { useDispatch } from "react-redux"
 import { createNotification } from "../reducers/notificationReducer"
+import { createBlog } from "../reducers/blogReducer"
 
 const handleInputChange = (stateUpdater) => {
   return ({ target }) => stateUpdater(target.value)
@@ -22,7 +22,7 @@ const TextualInput = ({ nom, state, stateUpdater }) => {
   )
 }
 
-const BlogForm = ({ setBlogs, setVisibility }) => {
+const BlogForm = ({ setVisibility }) => {
   const dispatch = useDispatch()
 
   const [title, setTitle] = useState("")
@@ -32,36 +32,22 @@ const BlogForm = ({ setBlogs, setVisibility }) => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    // the if statement below is a compromise made for exercise 5.16. Not wanting to restructure the
-    // application so that a postBlog function is passed as props, I've added the if statment below for
-    // tests
-
-    if (process.env.NODE_ENV === "test") {
-      setBlogs({ title, author, url })
-      return
-    }
-
-    try {
-      const blogObject = { title, author, url }
-      await blogServices.postBlog(blogObject)
-      const newBlogList = await blogServices.getAll()
-      setBlogs(newBlogList)
-      dispatch(
-        createNotification(
-          [
-            "success",
-            `added ${blogObject.title} by ${blogObject.author} to blog list`,
-          ],
-          5,
-        ),
+    dispatch(createBlog({ title, author, url }))
+      .then(() => {
+        dispatch(
+          createNotification(
+            ["success", `added ${title} by ${author} to blog list`],
+            5,
+          ),
+        )
+        if (setVisibility) setVisibility(false)
+        setTitle("")
+        setAuthor("")
+        setUrl("")
+      })
+      .catch((error) =>
+        dispatch(createNotification(["failure", error.message])),
       )
-      if (setVisibility) setVisibility(false)
-      setTitle("")
-      setAuthor("")
-      setUrl("")
-    } catch (error) {
-      dispatch(createNotification(["failure", error.message], 5))
-    }
   }
 
   return (

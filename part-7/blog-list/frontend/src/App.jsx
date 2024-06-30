@@ -7,12 +7,12 @@ import Toggleable from "./components/Toggleable"
 import blogService from "./services/blogs"
 
 import { createNotification } from "./reducers/notificationReducer"
+import { initialiseBlogs, clearBlogs } from "./reducers/blogReducer"
 import { useDispatch } from "react-redux"
 
 const App = () => {
   const dispatch = useDispatch()
 
-  const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
 
   useEffect(() => {
@@ -26,15 +26,13 @@ const App = () => {
 
   useEffect(() => {
     if (user) {
-      blogService.getAll().then((blogs) => {
-        setBlogs(blogs)
-      })
+      dispatch(initialiseBlogs())
       blogService.setToken(user.token)
     } else {
-      setBlogs([])
+      dispatch(clearBlogs())
       blogService.removeToken()
     }
-  }, [user])
+  }, [dispatch, user])
 
   const logOut = () => {
     setUser(null)
@@ -59,9 +57,9 @@ const App = () => {
             <button onClick={() => logOut()}>Log Out</button>
           </p>
           <Toggleable label={"add new blog"}>
-            <BlogForm setBlogs={setBlogs} />
+            <BlogForm />
           </Toggleable>
-          <BlogList blogs={blogs} setBlogs={setBlogs} user={user} />
+          <BlogList user={user} />
         </>
       )
     }
