@@ -70,4 +70,12 @@ export const clearBlogs = () => {
   }
 }
 
+export const addComment = (content, id) => {
+  return async (dispatch) => {
+    await blogService.postComment(content, id)
+    const newBlogList = await blogService.getAll()
+    dispatch(setAll(newBlogList))
+  }
+}
+
 export default blogSlice.reducer

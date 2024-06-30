@@ -1,9 +1,11 @@
 import { useSelector } from "react-redux"
 import { useParams, useNavigate } from "react-router-dom"
-import { likeBlog as likeBlogAction } from "../reducers/blogReducer"
+import { likeBlog as likeBlogAction, addComment } from "../reducers/blogReducer"
 import { createNotification } from "../reducers/notificationReducer"
 import { deleteBlog as deleteBlogAction } from "../reducers/blogReducer"
 import { useDispatch } from "react-redux"
+import { useState } from "react"
+import TextualInput from "./TextualInput"
 
 const BlogView = () => {
   const dispatch = useDispatch()
@@ -11,6 +13,7 @@ const BlogView = () => {
   const id = useParams().id
   const blogs = useSelector((state) => state.blogs)
   const user = useSelector((state) => state.user)
+  const [comment, setComment] = useState('')
 
   if (!blogs || blogs.length === 0 || !user) return null
 
@@ -55,6 +58,18 @@ const BlogView = () => {
     }
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    dispatch(addComment(comment, blog.id))
+      .then(() => {
+        dispatch(createNotification(["success", 'comment added']))
+      })
+      .catch(error => {
+        dispatch(createNotification(["failure", error.message]))
+      })
+    setComment("")
+  }
+
   if (!blog) return <p>no blog with given id found</p>
   else
     return (
@@ -68,6 +83,10 @@ const BlogView = () => {
         </p>
         <p>added by {blog.user.name}</p>
         <h3>comments</h3>
+        <form onSubmit={handleSubmit}>
+          <TextualInput nom={"comment"} state={comment} stateUpdater={setComment} />
+          <button type="submit">add comment</button>
+        </form>
         <ul>
           {blog.comments.map((commentObject) => (
             <li key={commentObject.id}>{commentObject.content}</li>

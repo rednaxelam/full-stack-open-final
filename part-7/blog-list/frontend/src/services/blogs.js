@@ -47,6 +47,16 @@ const deleteBlog = async (id) => {
   }
 }
 
+const postComment = async (content, id) => {
+  try {
+    const commentObject = { comment: content }
+    const response = await axios.post(`${baseUrl}/${id}/comments`, commentObject)
+    return response.data
+  } catch (error) {
+    throw new Error(error.response.data.error)
+  }
+}
+
 export default {
   setToken,
   removeToken,
@@ -54,4 +64,5 @@ export default {
   postBlog,
   updateBlog,
   deleteBlog,
+  postComment
 }
