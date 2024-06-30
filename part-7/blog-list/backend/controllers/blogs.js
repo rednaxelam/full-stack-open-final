@@ -75,4 +75,33 @@ blogsRouter.put('/:id', async (request, response) => {
   response.json(updatedBlog)
 })
 
+blogsRouter.post('/:id/comments', async (request, response) => {
+  const getRandomInteger = () => Math.floor(Math.random() * 100000000)
+
+  if (!Object.hasOwn(request.body, 'comment')) {
+    response.status(400).json({ error: 'comment missing' })
+    return
+  }
+
+  const commentObject = request.body
+
+  const blogsWithID = await Blog.find({ _id: request.params.id }).exec()
+  if (blogsWithID.length < 1) {
+    response.status(404).json({ error: 'blog not found' })
+    return
+  }
+
+  const blogToUpdate = blogsWithID[0]
+  let modifiedBlog = null
+  if (!Object.hasOwn(blogToUpdate._doc, 'comments')) {
+    modifiedBlog = { ...(blogToUpdate._doc), comments: [{ content: commentObject.comment, id: getRandomInteger() }] }
+  } else {
+    modifiedBlog = { ...(blogToUpdate._doc), comments: blogToUpdate._doc.comments.concat({ content: commentObject.comment, id: getRandomInteger() }) }
+  }
+
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, modifiedBlog, { new: true, runValidators: true, context: 'query' })
+
+  response.json(updatedBlog)
+})
+
 module.exports = blogsRouter

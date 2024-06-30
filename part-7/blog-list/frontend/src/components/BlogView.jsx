@@ -46,7 +46,7 @@ const BlogView = () => {
       const successMessage = `entry for ${blog.title} has been successfully deleted`
       dispatch(deleteBlogAction(blog))
         .then(() => {
-          navigate('/')
+          navigate("/")
           dispatch(createNotification(["success", successMessage]))
         })
         .catch((error) =>
@@ -64,10 +64,15 @@ const BlogView = () => {
           <a href={blog.url}>{blog.url}</a>
         </p>
         <p>
-          {blog.likes} likes{" "}
-          <button onClick={() => likeBlog()}>like</button>
+          {blog.likes} likes <button onClick={() => likeBlog()}>like</button>
         </p>
         <p>added by {blog.user.name}</p>
+        <h3>comments</h3>
+        <ul>
+          {blog.comments.map((commentObject) => (
+            <li key={commentObject.id}>{commentObject.content}</li>
+          ))}
+        </ul>
         {user.username === blog.user.username ? (
           <p>
             <button onClick={() => deleteBlog()}>remove</button>
