@@ -4,6 +4,7 @@ import LogInForm from "./components/LogInForm"
 import Header from "./components/Header"
 import Home from "./components/Home"
 import Users from "./components/Users"
+import User from "./components/User"
 
 import { initialiseBlogs, clearBlogs } from "./reducers/blogReducer"
 import { initialiseUser, logOut as logOutAction } from "./reducers/userReducer"
@@ -43,6 +44,7 @@ const App = () => {
 
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/users/:id" element={<User />} />
           <Route path="/users" element={<Users />} />
         </Routes>
       </div>

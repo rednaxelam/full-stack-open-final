@@ -10,4 +10,13 @@ const getUsers = async () => {
   }
 }
 
-export default { getUsers }
+const getUserById = async (id) => {
+  try {
+    const response = await axios.get(`${baseUrl}/${id}`)
+    return response.data
+  } catch (error) {
+    throw new Error(error.response.data.error)
+  }
+}
+
+export default { getUsers, getUserById }
