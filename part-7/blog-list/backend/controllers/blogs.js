@@ -36,6 +36,8 @@ blogsRouter.post('/', middleware.userExtractor, async (request, response) => {
 blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) => {
   const blog = await Blog.findById(request.params.id)
 
+  const user = await User.findById(request.userId)
+
   if (!blog) {
     return response.status(204).json({ warning: 'no blog was found with given id' })
   }
@@ -46,6 +48,9 @@ blogsRouter.delete('/:id', middleware.userExtractor, async (request, response) =
   }
 
   await blog.deleteOne()
+
+  user.blogs = user.blogs.filter(blogId => blogId.toString() !== request.params.id)
+  await user.save()
 
   response.status(204).end()
 })
