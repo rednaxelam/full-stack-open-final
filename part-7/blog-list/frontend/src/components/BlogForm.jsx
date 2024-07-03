@@ -2,6 +2,26 @@ import { useState } from "react"
 import { useDispatch } from "react-redux"
 import { createNotification } from "../reducers/notificationReducer"
 import { createBlog } from "../reducers/blogReducer"
+import styled from "styled-components"
+
+const StyleWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  width: max-content;
+`
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  margin-bottom: 10px;
+  row-gap: 5px;
+
+  & label {
+    padding-right: 5px;
+  }
+`
 
 const handleInputChange = (stateUpdater) => {
   return ({ target }) => stateUpdater(target.value)
@@ -51,15 +71,15 @@ const BlogForm = ({ setVisibility }) => {
   }
 
   return (
-    <>
+    <StyleWrapper>
       <h2>Create a new entry:</h2>
-      <form onSubmit={handleSubmit}>
+      <StyledForm onSubmit={handleSubmit}>
         <TextualInput nom={"title"} state={title} stateUpdater={setTitle} />
         <TextualInput nom={"author"} state={author} stateUpdater={setAuthor} />
         <TextualInput nom={"url"} state={url} stateUpdater={setUrl} />
         <button type="submit">Create</button>
-      </form>
-    </>
+      </StyledForm>
+    </StyleWrapper>
   )
 }
 

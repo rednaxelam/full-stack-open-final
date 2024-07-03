@@ -2,6 +2,18 @@ import { useDispatch } from "react-redux"
 import { logOut as logOutAction } from "../reducers/userReducer"
 import { createNotification } from "../reducers/notificationReducer"
 import { Link } from "react-router-dom"
+import styled from 'styled-components'
+
+const Title = styled.h1`
+  font-size: 2rem;
+  margin-bottom: 25px;
+`
+
+const StyledNav = styled.nav`
+  display: flex;
+  width: 100%;
+  column-gap: 0.75rem;
+`
 
 const Header = ({ user }) => {
   if (!user)
@@ -15,18 +27,18 @@ const Header = ({ user }) => {
     })
   }
 
-  const padding = {
-    padding: 5
+  const expandRight = {
+    "flexGrow": "1"
   }
 
   return (
     <>
-      <nav>
-        <Link style={padding} to='/'>blogs</Link>
-        <Link style={padding} to='/users'>users</Link>
-        <span style={padding}>{user.name} logged in <button onClick={() => logOut()}>Log Out</button></span>
-      </nav>
-      <h2>blogs</h2>
+      <StyledNav>
+        <Link to='/'>blogs</Link>
+        <Link style={expandRight} to='/users'>users</Link>
+        <span>{user.name} logged in <button onClick={() => logOut()}>Log Out</button></span>
+      </StyledNav>
+      <Title >The Blog List</Title >
     </>
   )
 }

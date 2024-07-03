@@ -2,6 +2,19 @@ import { useState } from "react"
 import { useDispatch } from "react-redux"
 import { createNotification } from "../reducers/notificationReducer"
 import { logIn } from "../reducers/userReducer"
+import styled from "styled-components"
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  align-items: end;
+  row-gap: 5px;
+
+  & label {
+    padding-right: 5px;
+  }
+`
 
 const LogInForm = () => {
   const dispatch = useDispatch()
@@ -29,7 +42,7 @@ const LogInForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <StyledForm onSubmit={handleSubmit}>
       <div className="form-control">
         <label htmlFor="username">username:</label>
         <input
@@ -51,7 +64,7 @@ const LogInForm = () => {
         />
       </div>
       <button type="submit">login</button>
-    </form>
+    </StyledForm>
   )
 }
 

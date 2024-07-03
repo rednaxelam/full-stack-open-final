@@ -14,6 +14,8 @@ const OutcomeMessage = () => {
       borderRadius: "5px",
       fontSize: "16px",
       padding: "10px",
+      width: "100%",
+      textAlign: "center",
     }
   } else if (notificationObject.outcome === "failure") {
     style = {
@@ -23,6 +25,8 @@ const OutcomeMessage = () => {
       borderRadius: "5px",
       fontSize: "16px",
       padding: "10px",
+      width: "100%",
+      textAlign: "center",
     }
   } else {
     style = {
@@ -32,6 +36,8 @@ const OutcomeMessage = () => {
       borderRadius: "5px",
       fontSize: "16px",
       padding: "10px",
+      width: "100%",
+      textAlign: "center",
     }
   }
 
