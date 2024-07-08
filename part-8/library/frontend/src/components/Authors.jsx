@@ -1,5 +1,6 @@
 import { GET_ALL_AUTHORS } from "../queries"
 import { useQuery } from "@apollo/client"
+import AuthorBirthYearForm from "./AuthorBirthYearForm"
 
 const Authors = () => {
   const authorsQuery = useQuery(GET_ALL_AUTHORS)
@@ -11,6 +12,7 @@ const Authors = () => {
   return (
     <div>
       <h2>authors</h2>
+      
       <table>
         <tbody>
           <tr>
@@ -27,6 +29,8 @@ const Authors = () => {
           ))}
         </tbody>
       </table>
+
+      <AuthorBirthYearForm />
     </div>
   )
 }
