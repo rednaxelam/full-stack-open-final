@@ -5,6 +5,7 @@ const Author = require('./models/author')
 const Book = require('./models/book')
 
 const mongoose = require('mongoose')
+const { GraphQLError } = require('graphql')
 
 const MONGODB_URI = process.env.MONGODB_URI
 
@@ -56,6 +57,20 @@ const typeDefs = `
   }
 `
 
+const performSaveToDB = async (asyncCallback) => {
+  try {
+    const result = await asyncCallback()
+    return result
+  } catch (error) {
+    throw new GraphQLError(error.message, {
+      extensions: {
+        code: "BAD_USER_INPUT",
+        error,
+      }
+    })
+  }
+}
+
 const resolvers = {
   Query: {
     bookCount: async () => Book.collection.countDocuments(),
@@ -82,14 +97,14 @@ const resolvers = {
       const authorsWithName = await Author.find({name: args.author})
       if (authorsWithName.length === 0) {
         const newAuthor = new Author({name: args.author})
-        const savedAuthor = await newAuthor.save()
+        const savedAuthor = await performSaveToDB(async () => newAuthor.save())
         const newBook = new Book({...args, author: savedAuthor._id})
-        const savedBook = await newBook.save()
+        const savedBook = await performSaveToDB(async () => newBook.save())
         return savedBook.populate('author')
       } else {
         const author = authorsWithName[0]
         const newBook = new Book({...args, author: author._id})
-        const savedBook = await newBook.save()
+        const savedBook = await performSaveToDB(async () => newBook.save())
         return savedBook.populate('author')
       }
     },
@@ -99,7 +114,7 @@ const resolvers = {
       else {
         authorToEdit = authorToEdit[0]
         authorToEdit.born = args.setBornTo
-        const savedAuthor = await authorToEdit.save()
+        const savedAuthor = await performSaveToDB(async () => authorToEdit.save())
         return savedAuthor
       }
     },
