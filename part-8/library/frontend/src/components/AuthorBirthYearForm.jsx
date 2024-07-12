@@ -2,11 +2,15 @@ import { useMutation } from "@apollo/client"
 import { useState } from "react"
 import { EDIT_AUTHOR } from "../queries"
 
-const AuthorBirthYearForm = ({ authors }) => {
+const AuthorBirthYearForm = ({ authors, setError }) => {
   const [ name, setName ] = useState(authors[0].name)
   const [ birthYear, setBirthYear] = useState('')
 
-  const [ editAuthor ] = useMutation(EDIT_AUTHOR)
+  const [ editAuthor ] = useMutation(EDIT_AUTHOR, {
+    onError: (error) => {
+      setError(error.graphQLErrors[0].message)
+    }
+  })
 
   const handleSubmit = (e) => {
     e.preventDefault()
