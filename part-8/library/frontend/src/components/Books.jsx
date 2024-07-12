@@ -6,13 +6,15 @@ const Books = () => {
   const [currentGenre, setCurrentGenre] = useState(null)
 
   const allBooksQuery = useQuery(GET_ALL_BOOKS, {
-    skip: currentGenre
+    skip: currentGenre,
+    fetchPolicy: 'network-only',
   })
   const booksByGenreQuery = useQuery(GET_BOOKS_BY_GENRE, {
     skip: !currentGenre,
     variables: {
       genre: currentGenre
-    }
+    },
+    fetchPolicy: 'network-only',
   })
 
   const genresQuery = useQuery(GET_ALL_GENRES)
