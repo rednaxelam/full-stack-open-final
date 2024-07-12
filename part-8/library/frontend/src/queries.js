@@ -48,6 +48,15 @@ export const GET_BOOKS_BY_GENRE = gql`
   }
 `
 
+export const GET_USER_FAVORITE_GENRE = gql`
+  query {
+    me {
+      favoriteGenre
+      id
+    }
+  }
+`
+
 export const ADD_BOOK = gql`
   mutation addBook(
     $title: String!

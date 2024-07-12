@@ -3,13 +3,16 @@ import Books from "./components/Books"
 import NewBook from "./components/NewBook"
 import LoginForm from "./components/LoginForm"
 import Notification from "./components/Notification"
+import Recommended from "./components/Recommended"
 import { Routes, Route, Link } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { useApolloClient } from "@apollo/client"
+import { useNavigate } from "react-router-dom"
 
 const LoggedInNavElements = ({logout, style}) => {
   return <>
     <Link style={style} to="/add-book">add book</Link>
+    <Link style={style} to="/recommended">recommended</Link>
     <button style={style} onClick={() => logout()}>log out</button>
   </>
 }
@@ -23,6 +26,8 @@ const App = () => {
   const [token, setToken] = useState(null)
   const client = useApolloClient()
 
+  const navigate = useNavigate()
+
   const padding = {
     padding: 5
   }
@@ -33,6 +38,7 @@ const App = () => {
   }
 
   const logout = () => {
+    navigate('/')
     setToken(null)
     localStorage.clear()
     client.resetStore()
@@ -60,6 +66,7 @@ const App = () => {
         <Route path="/books" element={<Books />} />
         <Route path="/add-book" element={<NewBook />} />
         <Route path="/login-form" element={<LoginForm setError={setError} setToken={setToken} />} />
+        <Route path="/recommended" element={<Recommended />} />
       </Routes>
     </>
   )
