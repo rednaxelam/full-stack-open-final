@@ -35,13 +35,6 @@ const resolvers = {
     me: async (obj, args, context) => context.hasOwnProperty('currentUser') ? context.currentUser : null
   },
 
-  Author: {
-    bookCount: async (author) => {
-      const books = await Book.find({author: author._id})
-      return books.length
-    }
-  },
-
   Mutation: {
     addBook: async (root, args, context) => {
       const currentUser = context.currentUser
@@ -54,7 +47,7 @@ const resolvers = {
 
       const authorsWithName = await Author.find({name: args.author})
       if (authorsWithName.length === 0) {
-        const newAuthor = new Author({name: args.author})
+        const newAuthor = new Author({name: args.author, bookCount: 1})
         const savedAuthor = await performSaveToDB(async () => newAuthor.save())
         const newBook = new Book({...args, author: savedAuthor._id})
         const savedBook = await performSaveToDB(async () => newBook.save())
@@ -63,6 +56,8 @@ const resolvers = {
         return savedPopulatedBook
       } else {
         const author = authorsWithName[0]
+        author.bookCount = author.bookCount + 1
+        await performSaveToDB(async () => author.save())
         const newBook = new Book({...args, author: author._id})
         const savedBook = await performSaveToDB(async () => newBook.save())
         const savedPopulatedBook = await savedBook.populate('author')
