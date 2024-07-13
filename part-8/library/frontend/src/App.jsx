@@ -6,8 +6,9 @@ import Notification from "./components/Notification"
 import Recommended from "./components/Recommended"
 import { Routes, Route, Link } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { useApolloClient } from "@apollo/client"
+import { useApolloClient, useSubscription } from "@apollo/client"
 import { useNavigate } from "react-router-dom"
+import { BOOK_ADDED } from "./queries"
 
 const LoggedInNavElements = ({logout, style}) => {
   return <>
@@ -50,6 +51,12 @@ const App = () => {
       setToken(token)
     }
   }, [])
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) =>  {
+      window.alert('new book added')
+    }
+  })
 
   return (
     <>
