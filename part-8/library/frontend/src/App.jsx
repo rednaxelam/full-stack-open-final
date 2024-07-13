@@ -8,7 +8,8 @@ import { Routes, Route, Link } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { useApolloClient, useSubscription } from "@apollo/client"
 import { useNavigate } from "react-router-dom"
-import { BOOK_ADDED } from "./queries"
+import { BOOK_ADDED, GET_ALL_BOOKS } from "./queries"
+import { updateCache } from "./utils"
 
 const LoggedInNavElements = ({logout, style}) => {
   return <>
@@ -33,8 +34,8 @@ const App = () => {
     padding: 5
   }
 
-  const setError = (content) => {
-    setNotificationObject({content, outcome: 'failure'})
+  const setNotification = ({ content, outcome }) => {
+    setNotificationObject({ content, outcome })
     setTimeout(() => setNotificationObject({}), 5000)
   }
 
@@ -53,8 +54,10 @@ const App = () => {
   }, [])
 
   useSubscription(BOOK_ADDED, {
-    onData: ({ data }) =>  {
-      window.alert('new book added')
+    onData: ({ data, client }) => {
+      const addedBook = data.data.bookAdded
+      setNotification({ content: `book "${addedBook.title}" has been added`, outcome: "success"})
+      updateCache(client.cache, { query: GET_ALL_BOOKS }, addedBook)
     }
   })
 
@@ -69,10 +72,10 @@ const App = () => {
       </nav>
 
       <Routes>
-        <Route path="/" element={<Authors setError={setError} />} />
+        <Route path="/" element={<Authors setNotification={setNotification} />} />
         <Route path="/books" element={<Books />} />
         <Route path="/add-book" element={<NewBook />} />
-        <Route path="/login-form" element={<LoginForm setError={setError} setToken={setToken} />} />
+        <Route path="/login-form" element={<LoginForm setNotification={setNotification} setToken={setToken} />} />
         <Route path="/recommended" element={<Recommended />} />
       </Routes>
     </>

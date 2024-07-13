@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { LOG_IN } from "../queries"
 import { useNavigate } from "react-router-dom"
 
-const LoginForm = ({ setToken, setError }) => {
+const LoginForm = ({ setToken, setNotification }) => {
   const navigate = useNavigate()
 
   const [username, setUsername] = useState('')
@@ -11,7 +11,7 @@ const LoginForm = ({ setToken, setError }) => {
 
   const [login, result] = useMutation(LOG_IN, {
     onError: (error) => {
-      setError(error.graphQLErrors[0].message)
+      setNotification({ content: error.graphQLErrors[0].message, outcome: "failure" })
     }
   })
 

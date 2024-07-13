@@ -2,7 +2,7 @@ import { GET_ALL_AUTHORS } from "../queries"
 import { useQuery } from "@apollo/client"
 import AuthorBirthYearForm from "./AuthorBirthYearForm"
 
-const Authors = ({ setError }) => {
+const Authors = ({ setNotification }) => {
   const authorsQuery = useQuery(GET_ALL_AUTHORS)
   
   if (authorsQuery.loading) return <p>loading data...</p>
@@ -30,7 +30,7 @@ const Authors = ({ setError }) => {
         </tbody>
       </table>
 
-      <AuthorBirthYearForm authors={ authors } setError={setError} />
+      <AuthorBirthYearForm authors={ authors } setNotification={setNotification} />
     </div>
   )
 }
