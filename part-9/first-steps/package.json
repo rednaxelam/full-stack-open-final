@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "ts-node": "ts-node"
+    "ts-node": "ts-node",
+    "calculateBmi": "ts-node -- bmiCalculator.ts"
   },
   "author": "Michael Alexander",
   "license": "ISC",
