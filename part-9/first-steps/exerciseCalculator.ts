@@ -8,7 +8,27 @@ interface ExerciseHistorySummary {
   average: number,
 }
 
-const calculateExercises = (exerciseHours: number[], targetDailyHours: number): ExerciseHistorySummary => {
+interface ExerciseHistory {
+  exerciseHours: number[],
+  targetDailyHours: number,
+}
+
+const parseArguments = (args: String[]): ExerciseHistory => {
+  if (args.length < 4) throw new Error('Not enough arguments');
+
+  let numberArgs = args.slice(2).map((arg) => {
+    const numberArg: number = Number(arg);
+    if (isNaN(numberArg)) throw new Error('Arguments must be valid javascript number literals');
+    return numberArg;
+  })
+
+  return {
+    exerciseHours: numberArgs.slice(1),
+    targetDailyHours: numberArgs[0],
+  }
+}
+
+export const calculateExercises = (exerciseHours: number[], targetDailyHours: number): ExerciseHistorySummary => {
   const periodLength: number = exerciseHours.length;
   const trainingDays: number =  exerciseHours.reduce((total, current) => current === 0 ? total : total + 1, 0);
   const target: number = targetDailyHours;
@@ -28,4 +48,13 @@ const calculateExercises = (exerciseHours: number[], targetDailyHours: number): 
   }
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+try {
+  const {exerciseHours, targetDailyHours} = parseArguments(process.argv)
+  console.log(calculateExercises(exerciseHours, targetDailyHours))
+} catch (error: unknown) {
+  if (error instanceof Error) {
+    console.log(`Oh no: ${error.message}`)
+  } else {
+    console.log('A fatal error occurred I guess ¯\_(ツ)_/¯')
+  }
+}
