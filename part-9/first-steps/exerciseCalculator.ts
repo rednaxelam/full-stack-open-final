@@ -8,25 +8,25 @@ interface ExerciseHistorySummary {
   average: number,
 }
 
-interface ExerciseHistory {
-  exerciseHours: number[],
-  targetDailyHours: number,
-}
+// interface ExerciseHistory {
+//   exerciseHours: number[],
+//   targetDailyHours: number,
+// }
 
-const parseArguments = (args: string[]): ExerciseHistory => {
-  if (args.length < 4) throw new Error('Not enough arguments');
+// const parseArguments = (args: string[]): ExerciseHistory => {
+//   if (args.length < 4) throw new Error('Not enough arguments');
 
-  const numberArgs = args.slice(2).map((arg) => {
-    const numberArg: number = Number(arg);
-    if (isNaN(numberArg)) throw new Error('Arguments must be valid javascript number literals');
-    return numberArg;
-  });
+//   const numberArgs = args.slice(2).map((arg) => {
+//     const numberArg: number = Number(arg);
+//     if (isNaN(numberArg)) throw new Error('Arguments must be valid javascript number literals');
+//     return numberArg;
+//   });
 
-  return {
-    exerciseHours: numberArgs.slice(1),
-    targetDailyHours: numberArgs[0],
-  };
-};
+//   return {
+//     exerciseHours: numberArgs.slice(1),
+//     targetDailyHours: numberArgs[0],
+//   };
+// };
 
 export const calculateExercises = (exerciseHours: number[], targetDailyHours: number): ExerciseHistorySummary => {
   const periodLength: number = exerciseHours.length;
@@ -48,13 +48,13 @@ export const calculateExercises = (exerciseHours: number[], targetDailyHours: nu
   };
 };
 
-try {
-  const {exerciseHours, targetDailyHours} = parseArguments(process.argv);
-  console.log(calculateExercises(exerciseHours, targetDailyHours));
-} catch (error: unknown) {
-  if (error instanceof Error) {
-    console.log(`Oh no: ${error.message}`);
-  } else {
-    console.log('A fatal error occurred I guess ¯\\_(ツ)_/¯');
-  }
-}
+// try {
+//   const {exerciseHours, targetDailyHours} = parseArguments(process.argv);
+//   console.log(calculateExercises(exerciseHours, targetDailyHours));
+// } catch (error: unknown) {
+//   if (error instanceof Error) {
+//     console.log(`Oh no: ${error.message}`);
+//   } else {
+//     console.log('A fatal error occurred I guess ¯\\_(ツ)_/¯');
+//   }
+// }

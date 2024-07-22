@@ -1,19 +1,19 @@
-interface heightAndWeightData {
-  height: number,
-  weight: number,
-}
+// interface heightAndWeightData {
+//   height: number,
+//   weight: number,
+// }
 
-const parseArguments = (args: string[]): heightAndWeightData => {
-  if (args.length < 4) throw new Error('Not enough arguments');
-  if (args.length > 4) throw new Error('Too many arguments');
+// const parseArguments = (args: string[]): heightAndWeightData => {
+//   if (args.length < 4) throw new Error('Not enough arguments');
+//   if (args.length > 4) throw new Error('Too many arguments');
 
-  const height: number = Number(args[2]);
-  const weight: number = Number(args[3]);
+//   const height: number = Number(args[2]);
+//   const weight: number = Number(args[3]);
 
-  if (!isNaN(height) && !isNaN(weight)) return { height, weight };
-  else throw new Error('Arguments must be valid javascript number literals');
+//   if (!isNaN(height) && !isNaN(weight)) return { height, weight };
+//   else throw new Error('Arguments must be valid javascript number literals');
 
-};
+// };
 
 export const calculateBmi = (height: number, weight: number): string => {
   
@@ -34,13 +34,13 @@ export const calculateBmi = (height: number, weight: number): string => {
   }
 };
 
-try {
-  const {height, weight} = parseArguments(process.argv);
-  console.log(calculateBmi(height, weight));
-} catch (error: unknown) {
-  if (error instanceof Error) {
-    console.log(`Oh no: ${error.message}`);
-  } else {
-    console.log('A fatal error occurred I guess ¯\\_(ツ)_/¯');
-  }
-}
+// try {
+//   const {height, weight} = parseArguments(process.argv);
+//   console.log(calculateBmi(height, weight));
+// } catch (error: unknown) {
+//   if (error instanceof Error) {
+//     console.log(`Oh no: ${error.message}`);
+//   } else {
+//     console.log('A fatal error occurred I guess ¯\\_(ツ)_/¯');
+//   }
+// }
