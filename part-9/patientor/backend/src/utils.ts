@@ -1,4 +1,4 @@
-import { NewPatient, PublicPatient, Patient } from "./types";
+import { NewPatient, PublicPatient, Patient, Gender } from "./types";
 
 const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
@@ -8,13 +8,29 @@ const isValidDate = (date: string): boolean => {
   return Boolean(Date.parse(date));
 };
 
+const isValidGender = (gender: string) : gender is Gender => {
+  return Object.values(Gender).map(gen => gen.toString()).includes(gender);
+};
+
 const parseStringField = (text: unknown): string => {
   if (!text || !isString(text)) {
     throw new Error('Incorrect or missing property');
   } else {
     return text;
   }
-}; 
+};
+
+const parseName = parseStringField;
+const parseSsn = parseStringField;
+const parseOccupation = parseStringField;
+
+const parseGender = (gender: unknown): Gender => {
+  if (!gender || !isString(gender) || !isValidGender(gender)) {
+    throw new Error('Incorrect or missing gender');
+  } else {
+    return gender;
+  }
+};
 
 const parseDateOfBirth = (text: unknown): string => {
   if (!text || !isString(text) || !isValidDate(text)) {
@@ -23,11 +39,6 @@ const parseDateOfBirth = (text: unknown): string => {
     return text;
   }
 };
-
-const parseName = parseStringField;
-const parseSsn = parseStringField;
-const parseGender = parseStringField;
-const parseOccupation = parseStringField;
 
 export const toNewPatient = (obj: unknown): NewPatient => {
   if (!obj || !(typeof obj === "object")) {
