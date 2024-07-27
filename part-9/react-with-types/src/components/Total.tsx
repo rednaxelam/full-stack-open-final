@@ -4,7 +4,7 @@ interface TotalProps {
 
 const Total = (props: TotalProps): JSX.Element => {
   const { totalExercises } = props;
-  return <p>{ totalExercises }</p>;
+  return <p>Total number of exercises: { totalExercises }</p>;
 };
 
 export default Total;
