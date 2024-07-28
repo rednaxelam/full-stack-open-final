@@ -53,15 +53,31 @@ const AddDiary = (props: AddDiaryProps): JSX.Element => {
     <h2>Add New Entry</h2>
     <div>
       <label htmlFor="date">date: </label>
-      <input type="text" id="date" name="date" value={date} onInput={updateTextualFormElement(setDate)}/>
+      <input type="date" id="date" name="date" value={date} onInput={updateTextualFormElement(setDate)}/>
     </div>
     <div>
-      <label htmlFor="visibility">visibility: </label>
-      <input type="text" id="visibility" name="visibility" value={visibility} onInput={updateTextualFormElement(setVisibility)}/>
+      visibility:&nbsp;&nbsp;
+      <label>great</label>
+      <input type="radio" name="visibility" value={'great'} onChange={() => setVisibility('great')} />
+      <label>good</label>
+      <input type="radio" name="visibility" value={'good'} onChange={() => setVisibility('good')} />
+      <label>ok</label>
+      <input type="radio" name="visibility" value={'ok'} onChange={() => setVisibility('ok')} />
+      <label>poor</label>
+      <input type="radio" name="visibility" value={'poor'} onChange={() => setVisibility('poor')} />
     </div>
     <div>
-      <label htmlFor="weather">weather: </label>
-      <input type="text" id="weather" name="weather" value={weather} onInput={updateTextualFormElement(setWeather)}/>
+      weather:&nbsp;&nbsp;
+      <label>sunny</label>
+      <input type="radio" name="weather" value={'sunny'} onChange={() => setWeather('sunny')} />
+      <label>rainy</label>
+      <input type="radio" name="weather" value={'rainy'} onChange={() => setWeather('rainy')} />
+      <label>cloudy</label>
+      <input type="radio" name="weather" value={'cloudy'} onChange={() => setWeather('cloudy')} />
+      <label>stormy</label>
+      <input type="radio" name="weather" value={'stormy'} onChange={() => setWeather('stormy')} />
+      <label>windy</label>
+      <input type="radio" name="weather" value={'windy'} onChange={() => setWeather('windy')} />
     </div>
     <div>
       <label htmlFor="comment">comment: </label>
