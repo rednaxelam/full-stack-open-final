@@ -2,13 +2,19 @@ import { NewDiaryEntry } from "../types";
 import toNewDiaryEntry from "../utils/utils";
 import diaryService from "../services/diaryService";
 import { useState } from "react";
+import axios from "axios";
 
+interface AddDiaryProps {
+  displayMessage: (message: string, outcome: 'success' | 'failure' | 'other') => void;
+}
 
-const AddDiary = (): JSX.Element => {
+const AddDiary = (props: AddDiaryProps): JSX.Element => {
   const [date, setDate] = useState('');
   const [visibility, setVisibility] = useState('');
   const [weather, setWeather] = useState('');
   const [comment, setComment] = useState('');
+
+  const { displayMessage } = props;
 
   const updateTextualFormElement = (stateUpdater: React.Dispatch<React.SetStateAction<string>>) => {
     return (event: React.ChangeEvent<HTMLInputElement>) => stateUpdater(event.currentTarget.value);
@@ -16,19 +22,21 @@ const AddDiary = (): JSX.Element => {
 
   const handleError = (error: unknown): void => {
     if (error instanceof Error) {
-      console.log(error.message);
+      displayMessage(error.message, 'failure');
+    } else if (axios.isAxiosError(error)) {
+      displayMessage(error.message, 'failure');
     } else {
-      console.log('Something went wrong ig');
+      displayMessage('Something went wrong ig', 'failure');
     }
   };
 
-  const handleSubmit = (event: React.SyntheticEvent) => {
+  const handleSubmit = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     const unvalidatedDiaryEntry: unknown = {date, visibility, weather, comment};
     try {
       const newDiaryEntry: NewDiaryEntry = toNewDiaryEntry(unvalidatedDiaryEntry);
       try {
-        diaryService.postDiary(newDiaryEntry);
+        await diaryService.postDiary(newDiaryEntry);
         setDate('');
         setVisibility('');
         setWeather('');
