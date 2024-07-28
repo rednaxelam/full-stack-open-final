@@ -8,6 +8,12 @@ router.get('/', (_req, res) => {
   res.json(patientService.getPublicPatients());
 });
 
+router.get('/:id', (req, res) => {
+  const searchResult = patientService.getPatient(req.params.id);
+  if (searchResult) res.json(searchResult);
+  else res.status(404).json({error: `Could not find note with given id: ${req.params.id}`});
+});
+
 router.post('/', (req, res) => {
   try {
     res.json(toPublicPatient(patientService.addNewPatient(req.body)));
