@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import patientService from "../../services/patients";
 import { useEffect, useState } from "react";
-import { Patient } from "../../types";
+import { Diagnosis, Patient } from "../../types";
 import { useParams } from "react-router-dom";
 import FemaleOutlinedIcon from '@mui/icons-material/FemaleOutlined';
 import MaleOutlinedIcon from '@mui/icons-material/MaleOutlined';
@@ -9,7 +9,12 @@ import QuestionMarkOutlinedIcon from '@mui/icons-material/QuestionMarkOutlined';
 
 import PatientEntryList from "./PatientEntryList";
 
-const PatientPage = (): JSX.Element => {
+interface PatientPageProps {
+  diagnoses: Diagnosis[]
+}
+
+const PatientPage = (props: PatientPageProps): JSX.Element => {
+  const { diagnoses } = props;
   const patientId = useParams().id;
   const [patient, setPatient] = useState<Patient | undefined>(undefined);
 
@@ -36,7 +41,7 @@ const PatientPage = (): JSX.Element => {
     <Typography variant="h6" style={{ marginTop: "0.5em" }}>
       entries
     </Typography>
-    <PatientEntryList entries={patient.entries}/>
+    <PatientEntryList entries={patient.entries} diagnoses={diagnoses}/>
   </div>;
 };
 

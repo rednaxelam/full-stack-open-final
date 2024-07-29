@@ -8,6 +8,11 @@ const getDiagnoses = (): Diagnosis[] => {
   return diagnoses;
 };
 
+const getDiagnosis = (code: string): Diagnosis | undefined => {
+  return diagnoses.find(diagnosis => diagnosis.code === code);
+};
+
 export default {
-  getDiagnoses
+  getDiagnoses,
+  getDiagnosis,
 };
