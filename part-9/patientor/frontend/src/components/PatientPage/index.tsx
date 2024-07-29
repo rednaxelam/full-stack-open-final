@@ -7,6 +7,8 @@ import FemaleOutlinedIcon from '@mui/icons-material/FemaleOutlined';
 import MaleOutlinedIcon from '@mui/icons-material/MaleOutlined';
 import QuestionMarkOutlinedIcon from '@mui/icons-material/QuestionMarkOutlined';
 
+import PatientEntryList from "./PatientEntryList";
+
 const PatientPage = (): JSX.Element => {
   const patientId = useParams().id;
   const [patient, setPatient] = useState<Patient | undefined>(undefined);
@@ -18,7 +20,7 @@ const PatientPage = (): JSX.Element => {
 
   if (patientId === undefined || patient === undefined) return <></>;
   else return <div>
-    <Typography variant="h6" style={{ marginTop: "0.5em" }}>
+    <Typography variant="h5" style={{ marginTop: "0.5em" }}>
       {patient.name}
       {patient.gender === 'female' 
         ? <FemaleOutlinedIcon /> 
@@ -31,6 +33,10 @@ const PatientPage = (): JSX.Element => {
       ssn: {patient.ssn} <br />
       occupation: {patient.occupation}
     </p>
+    <Typography variant="h6" style={{ marginTop: "0.5em" }}>
+      entries
+    </Typography>
+    <PatientEntryList entries={patient.entries}/>
   </div>;
 };
 
