@@ -12,7 +12,7 @@ const DiagnosesComponent = (props: DiagnosisComponentProps): JSX.Element => {
     return diagnoses.find(diagnosis => diagnosis.code === code);
   };
   
-  if (entry.diagnosisCodes) {
+  if (entry.diagnosisCodes && entry.diagnosisCodes.length > 0) {
     return <div>
       Diagnoses:<br />
       <ul>
