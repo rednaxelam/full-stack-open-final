@@ -81,6 +81,7 @@ const PatientPage = (props: PatientPageProps): JSX.Element => {
       error={error}
       onClose={closeModal}
       setError={setError}
+      diagnoses={diagnoses}
     />
     <Button variant="contained" onClick={() => openModal()}>
         Add New Entry
