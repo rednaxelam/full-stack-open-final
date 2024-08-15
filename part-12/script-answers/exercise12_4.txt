@@ -1,0 +1,11 @@
+Script started on 2024-08-15 17:51:33+01:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="80" LINES="24"]
+[?2004h]0;m@m-VirtualBox: ~/repos/full-stack-open-final/part-12[01;32mm@m-VirtualBox[00m:[01;34m~/repos/full-stack-open-final/part-12[00m$ docker start =i cmon_dude  [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[1P
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C-i cmon_dude  [A]0;m@m-VirtualBox: ~/repos/full-stack-open-final/part-12[01;32mm@m-VirtualBox[00m:[01;34m~/repos/full-stack-open-final/part-12[00m$ [C[C[C[C[C[C[C[C[C[C[C[C[C[C
+[?2004l[?2004h]0;root@d20737adf788: /root@d20737adf788:/# node usr/src/app/index.js 
+[?2004lHello World
+[?2004h]0;root@d20737adf788: /root@d20737adf788:/# [K[?2004l
+exit
+[?2004h]0;m@m-VirtualBox: ~/repos/full-stack-open-final/part-12[01;32mm@m-VirtualBox[00m:[01;34m~/repos/full-stack-open-final/part-12[00m$ [?2004l
+exit
+
+Script done on 2024-08-15 17:53:52+01:00 [COMMAND_EXIT_CODE="0"]
