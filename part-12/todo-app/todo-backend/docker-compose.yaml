@@ -1,0 +1,6 @@
+services:
+  backend-server:
+    image: todo-backend-server-prod
+    build: .
+    ports:
+      - 3000:3000
