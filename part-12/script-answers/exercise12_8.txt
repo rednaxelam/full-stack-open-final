@@ -1,0 +1,50 @@
+Script started on 2024-08-18 16:30:12+01:00 [TERM="xterm-256color" TTY="/dev/pts/1" COLUMNS="80" LINES="24"]
+[?2004h]0;m@m-VirtualBox: ~/repos/full-stack-open-final/part-12/todo-app/todo-backend[01;32mm@m-VirtualBox[00m:[01;34m~/repos/full-stack-open-final/part-12/todo-app/todo-backend[00m$ dock er exec -it mon[K[K[Ktodo-backend-mongo-1 bash
+[?2004lroot@0d57e5f18ceb:/# mongo -u root -p example
+MongoDB shell version v4.4.18
+connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("16b20bae-0f34-4b14-8063-fdc32a75fa79") }
+MongoDB server version: 4.4.18
+---
+The server generated these startup warnings when booting: 
+        2024-08-18T15:08:51.811+00:00: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+---
+---
+        Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+        metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+        The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+        and anyone you share the URL with. MongoDB may use this information to make product
+        improvements and to suggest MongoDB products and deployment options to you.
+
+        To enable free monitoring, run the following command: db.enableFreeMonitoring()
+        To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+---
+> show dbs[3G[Jshow dbs[11G
+admin         0.000GB
+config        0.000GB
+local         0.000GB
+the_database  0.000GB
+> use the [3G[Juse the[10G_database[3G[Juse the_database[19G
+switched to db the_database
+> show collections[3G[Jshow collections[19G
+todos
+> db.todos.find({})[3G[Jdb.todos.find({})[20G
+{ "_id" : ObjectId("66c205b5edde712a6105db28"), "text" : "Write some more code", "done" : true }
+{ "_id" : ObjectId("66c205b5edde712a6105db29"), "text" : "Learn about containers real good", "done" : false }
+> db.todos.insertOne( { text: "I'm in the shell[3G[Jdb.todos.insertOne( { text: "I'm in the shel[47G[3G[Jdb.todos.insertOne( { text: "I'm in the she[46G[3G[Jdb.todos.insertOne( { text: "I'm in the sh[45G[3G[Jdb.todos.insertOne( { text: "I'm in the s[44G[3G[Jdb.todos.insertOne( { text: "I'm in the [43G[3G[Jdb.todos.insertOne( { text: "I'm in the[42G[3G[Jdb.todos.insertOne( { text: "I'm in th[41G[3G[Jdb.todos.insertOne( { text: "I'm in t[40G[3G[Jdb.todos.insertOne( { text: "I'm in [39G[3G[Jdb.todos.insertOne( { text: "I'm in[38G[3G[Jdb.todos.insertOne( { text: "I'm i[37G[3G[Jdb.todos.insertOne( { text: "I'm [36Gdoing something", done: true } )[3G[Jdb.todos.insertOne( { text: "I'm doing something", done: true } )[68G
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("66c215536c9f64ddb1c33a5a")
+}
+> db/[3G[Jdb[5G.todos.find({})[3G[Jdb.todos.find({})[20G
+{ "_id" : ObjectId("66c205b5edde712a6105db28"), "text" : "Write some more code", "done" : true }
+{ "_id" : ObjectId("66c205b5edde712a6105db29"), "text" : "Learn about containers real good", "done" : false }
+{ "_id" : ObjectId("66c215536c9f64ddb1c33a5a"), "text" : "I'm doing something", "done" : true }
+> [3G[J[3G^C
+bye
+root@0d57e5f18ceb:/# exit
+[?2004h]0;m@m-VirtualBox: ~/repos/full-stack-open-final/part-12/todo-app/todo-backend[01;32mm@m-VirtualBox[00m:[01;34m~/repos/full-stack-open-final/part-12/todo-app/todo-backend[00m$ [?2004l
+exit
+
+Script done on 2024-08-18 16:39:15+01:00 [COMMAND_EXIT_CODE="0"]
